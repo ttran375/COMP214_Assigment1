@@ -13,22 +13,21 @@ WHERE
             Products
     );
 
-select * from products;
 --Question 2
 --List the shipper id, shipping company and freight cost for the order with the lowest freight charge.
 --2 marks
 SELECT
     shippers.SHIPPERID,
     shippers.COMPANYNAME,
-    MIN(orders.FREIGHT) as lowest_freight_cost
+    orders.FREIGHT as lowest_freight_cost
 FROM
     orders
     JOIN shippers ON orders.SHIPVIA = shippers.SHIPPERID
-GROUP BY
-    shippers.SHIPPERID,
-    shippers.COMPANYNAME
-ORDER BY
-    lowest_freight_cost ASC
+WHERE
+    orders.FREIGHT = (
+        SELECT MIN(FREIGHT)
+        FROM orders
+    )
 FETCH FIRST
     1 ROWS ONLY;
 
