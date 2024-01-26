@@ -37,25 +37,23 @@ WHERE
 --List all products with their highest unit price, i.e. not discounted.
 --3 marks
 SELECT
-    P.PRODUCTID,
-    P.PRODUCTNAME,
-    MAX(OD.UNITPRICE) AS HIGHESTUNITPRICE
+    PRODUCTID,
+    PRODUCTNAME,
+    MAX(UNITPRICE) AS HIGHESTUNITPRICE
 FROM
-    (
+    PRODUCTS
+WHERE
+    PRODUCTID IN (
         SELECT
-            ORDERID,
-            PRODUCTID,
-            UNITPRICE
+            PRODUCTID
         FROM
             ORDERDETAILS
         WHERE
             DISCOUNT = 0
-    )        OD
-    JOIN PRODUCTS P
-    ON OD.PRODUCTID = P.PRODUCTID
+    )
 GROUP BY
-    P.PRODUCTID,
-    P.PRODUCTNAME;
+    PRODUCTID,
+    PRODUCTNAME;
 
 --Question 4
 --List the average unit price for each product category and
@@ -63,26 +61,31 @@ GROUP BY
 --4 marks
 SELECT
     C.CATEGORYNAME,
-    AVG(P.UNITPRICE) AS AVGUNITPRICE,
     (
         SELECT
-            AVG(P2.UNITPRICE)
+            AVG(P.UNITPRICE)
         FROM
-            PRODUCTS     P2
-            JOIN ORDERDETAILS OD2
-            ON P2.PRODUCTID = OD2.PRODUCTID
+            PRODUCTS P
         WHERE
-            C.CATEGORYID = P2.CATEGORYID
-            AND OD2.DISCOUNT = 0
+            C.CATEGORYID = P.CATEGORYID
+    ) AS AVGUNITPRICE,
+    (
+        SELECT
+            AVG(OD.UNITPRICE)
+        FROM
+            ORDERDETAILS OD
+        WHERE
+            OD.DISCOUNT = 0
+            AND OD.PRODUCTID IN (
+                SELECT
+                    P.PRODUCTID
+                FROM
+                    PRODUCTS     P
+                WHERE
+                    C.CATEGORYID = P.CATEGORYID
+            )
     ) AS AVGUNITPRICEWITHOUTDISCOUNT
 FROM
-    CATEGORIES   C
-    JOIN PRODUCTS P
-    ON C.CATEGORYID = P.CATEGORYID
-    LEFT JOIN ORDERDETAILS OD
-    ON P.PRODUCTID = OD.PRODUCTID
-GROUP BY
-    C.CATEGORYID,
-    C.CATEGORYNAME
+    CATEGORIES C
 ORDER BY
     C.CATEGORYID;
