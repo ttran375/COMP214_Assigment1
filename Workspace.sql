@@ -14,7 +14,8 @@ WHERE
     );
 
 --Question 2
---List the shipper id, shipping company and freight cost for the order with the lowest freight charge.
+--List the shipper id, shipping company and freight cost for the order with the
+-- lowest freight charge.
 --2 marks
 SELECT
     SHIPPERS.SHIPPERID,
@@ -61,16 +62,19 @@ GROUP BY
 --the average unit price without discounts
 --4 marks
 SELECT
-    C.CATEGORYID,
     C.CATEGORYNAME,
     AVG(P.UNITPRICE) AS AVGUNITPRICE,
-    AVG(
-        CASE
-            WHEN OD.DISCOUNT = 0 THEN
-                P.UNITPRICE
-            ELSE
-                (1 - OD.DISCOUNT) * P.UNITPRICE
-        END)         AS AVGUNITPRICEWITHOUTDISCOUNT
+    (
+        SELECT
+            AVG(P2.UNITPRICE)
+        FROM
+            PRODUCTS     P2
+            JOIN ORDERDETAILS OD2
+            ON P2.PRODUCTID = OD2.PRODUCTID
+        WHERE
+            C.CATEGORYID = P2.CATEGORYID
+            AND OD2.DISCOUNT = 0
+    ) AS AVGUNITPRICEWITHOUTDISCOUNT
 FROM
     CATEGORIES   C
     JOIN PRODUCTS P
