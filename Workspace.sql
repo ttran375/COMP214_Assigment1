@@ -18,13 +18,25 @@ WHERE
 -- lowest freight charge.
 --2 marks
 SELECT
-    SHIPPERS.SHIPPERID,
-    SHIPPERS.COMPANYNAME,
-    ORDERS.FREIGHT       AS LOWEST_FREIGHT_COST
+    (
+        SELECT
+            SHIPPERID
+        FROM
+            SHIPPERS
+        WHERE
+            SHIPPERID = ORDERS.SHIPVIA
+    ) AS SHIPPERID,
+    (
+        SELECT
+            COMPANYNAME
+        FROM
+            SHIPPERS
+        WHERE
+            SHIPPERID = ORDERS.SHIPVIA
+    ) AS COMPANYNAME,
+    ORDERS.FREIGHT AS LOWEST_FREIGHT_COST
 FROM
     ORDERS
-    JOIN SHIPPERS
-    ON ORDERS.SHIPVIA = SHIPPERS.SHIPPERID
 WHERE
     ORDERS.FREIGHT = (
         SELECT
