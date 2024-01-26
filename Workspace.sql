@@ -4,59 +4,81 @@
 SELECT
     *
 FROM
-    Products
+    PRODUCTS
 WHERE
-    UnitPrice < (
+    UNITPRICE < (
         SELECT
-            AVG(UnitPrice)
+            AVG(UNITPRICE)
         FROM
-            Products
+            PRODUCTS
     );
 
 --Question 2
 --List the shipper id, shipping company and freight cost for the order with the lowest freight charge.
 --2 marks
 SELECT
-    shippers.SHIPPERID,
-    shippers.COMPANYNAME,
-    orders.FREIGHT as lowest_freight_cost
+    SHIPPERS.SHIPPERID,
+    SHIPPERS.COMPANYNAME,
+    ORDERS.FREIGHT       AS LOWEST_FREIGHT_COST
 FROM
-    orders
-    JOIN shippers ON orders.SHIPVIA = shippers.SHIPPERID
+    ORDERS
+    JOIN SHIPPERS
+    ON ORDERS.SHIPVIA = SHIPPERS.SHIPPERID
 WHERE
-    orders.FREIGHT = (
-        SELECT MIN(FREIGHT)
-        FROM orders
-    )
-FETCH FIRST
-    1 ROWS ONLY;
+    ORDERS.FREIGHT = (
+        SELECT
+            MIN(FREIGHT)
+        FROM
+            ORDERS
+    ) FETCH FIRST 1 ROWS ONLY;
 
 --Question 3
 --List all products with their highest unit price, i.e. not discounted.
 --3 marks
 SELECT
-    PRODUCTID,
-    PRODUCTNAME,
-    MAX(UNITPRICE) as highest_unit_price
+    P.PRODUCTID,
+    P.PRODUCTNAME,
+    MAX(OD.UNITPRICE) AS HIGHESTUNITPRICE
 FROM
-    products
+    (
+        SELECT
+            ORDERID,
+            PRODUCTID,
+            UNITPRICE
+        FROM
+            ORDERDETAILS
+        WHERE
+            DISCOUNT = 0
+    )        OD
+    JOIN PRODUCTS P
+    ON OD.PRODUCTID = P.PRODUCTID
 GROUP BY
-    PRODUCTID,
-    PRODUCTNAME;
+    P.PRODUCTID,
+    P.PRODUCTNAME;
 
 --Question 4
 --List the average unit price for each product category and
 --the average unit price without discounts
 --4 marks
 SELECT
-    c.CATEGORYID,
-    c.CATEGORYNAME,
-    AVG(p.UNITPRICE) as avg_unit_price
+    C.CATEGORYID,
+    C.CATEGORYNAME,
+    AVG(P.UNITPRICE) AS AVGUNITPRICE,
+    AVG(
+        CASE
+            WHEN OD.DISCOUNT = 0 THEN
+                P.UNITPRICE
+            ELSE
+                (1 - OD.DISCOUNT) * P.UNITPRICE
+        END)         AS AVGUNITPRICEWITHOUTDISCOUNT
 FROM
-    products p
-    JOIN categories c ON p.CATEGORYID = c.CATEGORYID
-WHERE
-    p.DISCONTINUED = 0
+    CATEGORIES   C
+    JOIN PRODUCTS P
+    ON C.CATEGORYID = P.CATEGORYID
+    LEFT JOIN ORDERDETAILS OD
+    ON P.PRODUCTID = OD.PRODUCTID
 GROUP BY
-    c.CATEGORYID,
-    c.CATEGORYNAME;
+    C.CATEGORYID,
+    C.CATEGORYNAME
+ORDER BY
+    C.CATEGORYID;
