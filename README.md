@@ -2,7 +2,7 @@
 
 ## Subqueries
 
-Create an SQL script to answer the following questions. Upload your .sql file to the Assignment 1 folder in ecentennial Use the database scripts included in the assignment folder
+Create an SQL script to answer the following questions. Upload your .sql file to the Assignment 1 folder in ecentennial. Use the database scripts included in the assignment folder
 
 ### Question 1
 
