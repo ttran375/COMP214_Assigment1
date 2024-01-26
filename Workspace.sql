@@ -13,6 +13,7 @@ WHERE
             Products
     );
 
+select * from products;
 --Question 2
 --List the shipper id, shipping company and freight cost for the order with the lowest freight charge.
 --2 marks
