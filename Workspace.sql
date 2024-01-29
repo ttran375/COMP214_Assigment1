@@ -18,14 +18,7 @@ WHERE
 -- lowest freight charge.
 --2 marks
 SELECT
-    (
-        SELECT
-            SHIPPERID
-        FROM
-            SHIPPERS
-        WHERE
-            SHIPPERID = ORDERS.SHIPVIA
-    ) AS SHIPPERID,
+    SHIPVIA AS SHIPPERID,
     (
         SELECT
             COMPANYNAME
@@ -34,16 +27,16 @@ SELECT
         WHERE
             SHIPPERID = ORDERS.SHIPVIA
     ) AS COMPANYNAME,
-    ORDERS.FREIGHT AS LOWEST_FREIGHT_COST
+    FREIGHT AS LOWEST_FREIGHT_COST
 FROM
     ORDERS
 WHERE
-    ORDERS.FREIGHT = (
+    FREIGHT = (
         SELECT
             MIN(FREIGHT)
         FROM
             ORDERS
-    ) FETCH FIRST 1 ROWS ONLY;
+    );
 
 --Question 3
 --List all products with their highest unit price, i.e. not discounted.
