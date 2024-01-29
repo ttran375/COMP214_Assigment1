@@ -58,7 +58,9 @@ WHERE
     )
 GROUP BY
     PRODUCTID,
-    PRODUCTNAME;
+    PRODUCTNAME
+ORDER BY
+    PRODUCTID;
 
 --Question 4
 --List the average unit price for each product category and
