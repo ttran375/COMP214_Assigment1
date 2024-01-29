@@ -21,7 +21,7 @@ SELECT
                 SELECT
                     P.PRODUCTID
                 FROM
-                    PRODUCTS     P
+                    PRODUCTS P
                 WHERE
                     C.CATEGORYID = P.CATEGORYID
             )
