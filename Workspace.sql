@@ -65,6 +65,7 @@ GROUP BY
 --the average unit price without discounts
 --4 marks
 SELECT
+    C.CATEGORYID,
     C.CATEGORYNAME,
     (
         SELECT
