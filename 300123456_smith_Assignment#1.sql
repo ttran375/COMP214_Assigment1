@@ -14,14 +14,14 @@ WHERE
 -- order with the lowest freight charge. 2 marks
 SELECT
     SHIPVIA AS SHIPPERID,
+    FREIGHT AS LOWEST_FREIGHT_COST,
     (
         SELECT COMPANYNAME
         FROM
             SHIPPERS
         WHERE
             SHIPPERID = ORDERS.SHIPVIA
-    ) AS COMPANYNAME,
-    FREIGHT AS LOWEST_FREIGHT_COST
+    ) AS COMPANYNAME
 FROM
     ORDERS
 WHERE
