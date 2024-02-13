@@ -1,8 +1,8 @@
 -- Question 3 List all products with their highest unit price, i.e. not 
 -- discounted. 3 marks
 SELECT
-    PRODUCTID,
-    PRODUCTNAME,
+    ProductID,
+    ProductName,
     MAX(UNITPRICE) AS HIGHESTUNITPRICE
 FROM
     PRODUCTS

@@ -11,8 +11,9 @@ SELECT
     (
         SELECT AVG(OD.UNITPRICE)
         FROM ORDERDETAILS AS OD -- Explicit aliasing for ORDERDETAILS table
-        WHERE OD.DISCOUNT = 0
-          AND OD.PRODUCTID IN (
+        WHERE
+            OD.DISCOUNT = 0
+            AND OD.PRODUCTID IN (
                 SELECT P.PRODUCTID
                 FROM PRODUCTS AS P -- Explicit aliasing for PRODUCTS table
                 WHERE C.CATEGORYID = P.CATEGORYID
