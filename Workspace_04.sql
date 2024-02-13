@@ -5,16 +5,16 @@ SELECT
     C.CATEGORYNAME,
     (
         SELECT AVG(P.UNITPRICE)
-        FROM PRODUCTS P
+        FROM PRODUCTS AS P -- Explicit aliasing for PRODUCTS table
         WHERE C.CATEGORYID = P.CATEGORYID
     ) AS AVGUNITPRICE,
     (
         SELECT AVG(OD.UNITPRICE)
-        FROM ORDERDETAILS OD
+        FROM ORDERDETAILS AS OD -- Explicit aliasing for ORDERDETAILS table
         WHERE OD.DISCOUNT = 0
           AND OD.PRODUCTID IN (
                 SELECT P.PRODUCTID
-                FROM PRODUCTS P
+                FROM PRODUCTS AS P -- Explicit aliasing for PRODUCTS table
                 WHERE C.CATEGORYID = P.CATEGORYID
             )
     ) AS AVGUNITPRICEWITHOUTDISCOUNT
