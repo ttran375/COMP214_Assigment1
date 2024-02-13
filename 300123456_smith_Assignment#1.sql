@@ -1,7 +1,6 @@
 -- Question 1 List all products whose unit price is less than the average 
 -- price. 1 mark
-SELECT
-    *
+SELECT *
 FROM
     PRODUCTS
 WHERE
@@ -16,8 +15,7 @@ WHERE
 SELECT
     SHIPVIA AS SHIPPERID,
     (
-        SELECT
-            COMPANYNAME
+        SELECT COMPANYNAME
         FROM
             SHIPPERS
         WHERE
@@ -28,11 +26,11 @@ FROM
     ORDERS
 WHERE
     FREIGHT = (
-        SELECT
-            MIN(FREIGHT)
+        SELECT MIN(FREIGHT)
         FROM
             ORDERS
     );
+
 
 -- Question 3 List all products with their highest unit price, i.e. not 
 -- discounted. 3 marks
@@ -44,8 +42,7 @@ FROM
     PRODUCTS
 WHERE
     PRODUCTID IN (
-        SELECT
-            PRODUCTID
+        SELECT PRODUCTID
         FROM
             ORDERDETAILS
         WHERE
@@ -63,8 +60,7 @@ SELECT
     C.CATEGORYID,
     C.CATEGORYNAME,
     (
-        SELECT
-            AVG(P.UNITPRICE)
+        SELECT AVG(P.UNITPRICE)
         FROM
             PRODUCTS P
         WHERE
