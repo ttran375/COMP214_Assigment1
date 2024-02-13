@@ -1,17 +1,18 @@
---Question 1 List all products whose unit price is less than the average price. 1 mark
+-- Question 1 List all products whose unit price is less than the average 
+-- price. 1 mark
 SELECT
     *
 FROM
     PRODUCTS
 WHERE
     UNITPRICE < (
-        SELECT
-            AVG(UNITPRICE)
+        SELECT AVG(UNITPRICE)
         FROM
             PRODUCTS
     );
 
---Question 2 List the shipper id, shipping company and freight cost for the order with the lowest freight charge. 2 marks
+--Question 2 List the shipper id, shipping company and freight cost for the 
+-- order with the lowest freight charge. 2 marks
 SELECT
     SHIPVIA AS SHIPPERID,
     (
@@ -33,7 +34,8 @@ WHERE
             ORDERS
     );
 
---Question 3 List all products with their highest unit price, i.e. not discounted. 3 marks
+-- Question 3 List all products with their highest unit price, i.e. not 
+-- discounted. 3 marks
 SELECT
     PRODUCTID,
     PRODUCTNAME,
@@ -55,7 +57,8 @@ GROUP BY
 ORDER BY
     PRODUCTID;
 
---Question 4 List the average unit price for each product category and the average unit price without discounts 4 marks
+-- Question 4 List the average unit price for each product category and the 
+-- average unit price without discounts 4 marks
 SELECT
     C.CATEGORYID,
     C.CATEGORYNAME,
@@ -78,7 +81,7 @@ SELECT
                 SELECT
                     P.PRODUCTID
                 FROM
-                    PRODUCTS     P
+                    PRODUCTS P
                 WHERE
                     C.CATEGORYID = P.CATEGORYID
             )
