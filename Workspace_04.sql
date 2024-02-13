@@ -5,28 +5,18 @@ SELECT
     C.CATEGORYNAME,
     (
         SELECT AVG(P.UNITPRICE)
-        FROM
-            PRODUCTS P
-        WHERE
-            C.CATEGORYID = P.CATEGORYID
+        FROM PRODUCTS P
+        WHERE C.CATEGORYID = P.CATEGORYID
     ) AS AVGUNITPRICE,
     (
-        SELECT
-            AVG(OD.UNITPRICE)
-        FROM
-            ORDERDETAILS OD
-        WHERE
-            OD.DISCOUNT = 0
-            AND OD.PRODUCTID IN (
-                SELECT
-                    P.PRODUCTID
-                FROM
-                    PRODUCTS P
-                WHERE
-                    C.CATEGORYID = P.CATEGORYID
+        SELECT AVG(OD.UNITPRICE)
+        FROM ORDERDETAILS OD
+        WHERE OD.DISCOUNT = 0
+          AND OD.PRODUCTID IN (
+                SELECT P.PRODUCTID
+                FROM PRODUCTS P
+                WHERE C.CATEGORYID = P.CATEGORYID
             )
     ) AS AVGUNITPRICEWITHOUTDISCOUNT
-FROM
-    CATEGORIES C
-ORDER BY
-    C.CATEGORYID;
+FROM CATEGORIES AS C -- Explicit aliasing for CATEGORIES table
+ORDER BY C.CATEGORYID;
